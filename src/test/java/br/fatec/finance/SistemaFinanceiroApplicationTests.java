@@ -1,10 +1,10 @@
-package br.fatec.sistema_estoque;
+package br.fatec.finance;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class SistemaEstoqueApplicationTests {
+class SistemaFinanceiroApplicationTests {
 
 	@Test
 	void contextLoads() {

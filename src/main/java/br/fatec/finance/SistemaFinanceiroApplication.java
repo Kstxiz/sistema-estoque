@@ -1,13 +1,13 @@
-package br.fatec.sistema_estoque;
+package br.fatec.finance;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SistemaEstoqueApplication {
+public class SistemaFinanceiroApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SistemaEstoqueApplication.class, args);
+		SpringApplication.run(SistemaFinanceiroApplication.class, args);
 	}
 
 }
