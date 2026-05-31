@@ -1,6 +1,6 @@
 package br.fatec.finance.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import br.fatec.finance.enums.CategoryType;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -8,14 +8,13 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "users")
+@Table(name = "categories")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-
-public class User {
+public class Category {
 
     @Id
     private UUID id;
@@ -23,14 +22,15 @@ public class User {
     @Column(nullable = false, length = 100)
     private String name;
 
-    @Column(nullable = false, unique = true, length = 150)
-    private String email;
-
-    @JsonIgnore
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String password;
+    private CategoryType type;
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
 }

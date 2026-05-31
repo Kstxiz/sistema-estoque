@@ -18,4 +18,20 @@ public class UserController {
     public List<User> findAll() {
         return userService.findAll();
     }
+
+    @PostMapping
+    public User create(@RequestBody CreateUserRequest request) {
+        return userService.create(
+                request.name(),
+                request.email(),
+                request.password()
+        );
+    }
+
+    public record CreateUserRequest(
+            String name,
+            String email,
+            String password
+    ) {
+    }
 }
