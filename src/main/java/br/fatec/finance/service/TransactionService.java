@@ -28,6 +28,36 @@ public class TransactionService {
         return transactionRepository.findAll();
     }
 
+    public List<Transaction> findWithFilters(
+            UUID userId,
+            TransactionType type,
+            UUID categoryId,
+            LocalDate startDate,
+            LocalDate endDate
+    ) {
+        if (userId == null) {
+            return transactionRepository.findAll();
+        }
+
+        if (type != null) {
+            return transactionRepository.findByUserIdAndType(userId, type);
+        }
+
+        if (categoryId != null) {
+            return transactionRepository.findByUserIdAndCategoryId(userId, categoryId);
+        }
+
+        if (startDate != null && endDate != null) {
+            return transactionRepository.findByUserIdAndTransactionDateBetween(
+                    userId,
+                    startDate,
+                    endDate
+            );
+        }
+
+        return transactionRepository.findByUserId(userId);
+    }
+
     public Transaction create(
             UUID userId,
             UUID categoryId,

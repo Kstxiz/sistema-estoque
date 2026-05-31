@@ -19,8 +19,20 @@ public class TransactionController {
     private final TransactionService transactionService;
 
     @GetMapping
-    public List<Transaction> findAll() {
-        return transactionService.findAll();
+    public List<Transaction> findWithFilters(
+            @RequestParam(required = false) UUID userId,
+            @RequestParam(required = false) TransactionType type,
+            @RequestParam(required = false) UUID categoryId,
+            @RequestParam(required = false) LocalDate startDate,
+            @RequestParam(required = false) LocalDate endDate
+    ) {
+        return transactionService.findWithFilters(
+                userId,
+                type,
+                categoryId,
+                startDate,
+                endDate
+        );
     }
 
     @PostMapping
