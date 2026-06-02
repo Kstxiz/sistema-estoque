@@ -1,5 +1,6 @@
 package br.fatec.finance.controller;
 
+import br.fatec.finance.dto.TransactionResponse;
 import br.fatec.finance.entity.Transaction;
 import br.fatec.finance.enums.TransactionType;
 import br.fatec.finance.service.TransactionService;
@@ -19,7 +20,7 @@ public class TransactionController {
     private final TransactionService transactionService;
 
     @GetMapping
-    public List<Transaction> findWithFilters(
+    public List<TransactionResponse> findWithFilters(
             @RequestParam(required = false) UUID userId,
             @RequestParam(required = false) TransactionType type,
             @RequestParam(required = false) UUID categoryId,

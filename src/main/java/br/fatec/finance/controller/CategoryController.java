@@ -1,5 +1,6 @@
 package br.fatec.finance.controller;
 
+import br.fatec.finance.dto.CategoryResponse;
 import br.fatec.finance.entity.Category;
 import br.fatec.finance.enums.CategoryType;
 import br.fatec.finance.service.CategoryService;
@@ -17,12 +18,12 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @GetMapping
-    public List<Category> findAll() {
+    public List<CategoryResponse> findAll() {
         return categoryService.findAll();
     }
 
     @PostMapping
-    public Category create(@RequestBody CreateCategoryRequest request) {
+    public CategoryResponse create(@RequestBody CreateCategoryRequest request) {
         return categoryService.create(
                 request.userId(),
                 request.name(),

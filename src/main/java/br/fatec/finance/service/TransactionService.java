@@ -1,5 +1,6 @@
 package br.fatec.finance.service;
 
+import br.fatec.finance.dto.TransactionResponse;
 import br.fatec.finance.entity.Category;
 import br.fatec.finance.entity.Transaction;
 import br.fatec.finance.entity.User;
@@ -24,38 +25,53 @@ public class TransactionService {
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
 
+    private TransactionResponse toResponse(Transaction transaction) {
+        return new TransactionResponse(
+                transaction.getId(),
+                transaction.getDescription(),
+                transaction.getAmount(),
+                transaction.getType(),
+                transaction.getTransactionDate(),
+                transaction.getCreatedAt(),
+                transaction.getUser().getId(),
+                transaction.getUser().getName(),
+                transaction.getCategory().getId(),
+                transaction.getCategory().getName()
+        );
+    }
+
     public List<Transaction> findAll() {
         return transactionRepository.findAll();
     }
 
-    public List<Transaction> findWithFilters(
+    public List<TransactionResponse> findWithFilters(
             UUID userId,
             TransactionType type,
             UUID categoryId,
             LocalDate startDate,
             LocalDate endDate
     ) {
+        List<Transaction> transactions;
+
         if (userId == null) {
-            return transactionRepository.findAll();
-        }
-
-        if (type != null) {
-            return transactionRepository.findByUserIdAndType(userId, type);
-        }
-
-        if (categoryId != null) {
-            return transactionRepository.findByUserIdAndCategoryId(userId, categoryId);
-        }
-
-        if (startDate != null && endDate != null) {
-            return transactionRepository.findByUserIdAndTransactionDateBetween(
+            transactions = transactionRepository.findAll();
+        } else if (type != null) {
+            transactions = transactionRepository.findByUserIdAndType(userId, type);
+        } else if (categoryId != null) {
+            transactions = transactionRepository.findByUserIdAndCategoryId(userId, categoryId);
+        } else if (startDate != null && endDate != null) {
+            transactions = transactionRepository.findByUserIdAndTransactionDateBetween(
                     userId,
                     startDate,
                     endDate
             );
+        } else {
+            transactions = transactionRepository.findByUserId(userId);
         }
 
-        return transactionRepository.findByUserId(userId);
+        return transactions.stream()
+                .map(this::toResponse)
+                .toList();
     }
 
     public Transaction create(

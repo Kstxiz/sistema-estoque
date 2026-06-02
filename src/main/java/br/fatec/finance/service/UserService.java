@@ -1,5 +1,6 @@
 package br.fatec.finance.service;
 
+import br.fatec.finance.dto.UserResponse;
 import br.fatec.finance.entity.User;
 import br.fatec.finance.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,8 +16,20 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public List<User> findAll() {
-        return userRepository.findAll();
+    private UserResponse toResponse(User user) {
+        return new UserResponse(
+                user.getId(),
+                user.getName(),
+                user.getEmail(),
+                user.getCreatedAt()
+        );
+    }
+
+    public List<UserResponse> findAll() {
+        return userRepository.findAll()
+                .stream()
+                .map(this::toResponse)
+                .toList();
     }
 
     public User create(String name, String email, String password) {

@@ -1,5 +1,6 @@
 package br.fatec.finance.service;
 
+import br.fatec.finance.dto.CategoryResponse;
 import br.fatec.finance.entity.Category;
 import br.fatec.finance.entity.User;
 import br.fatec.finance.enums.CategoryType;
@@ -19,11 +20,14 @@ public class CategoryService {
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
 
-    public List<Category> findAll() {
-        return categoryRepository.findAll();
+    public List<CategoryResponse> findAll() {
+        return categoryRepository.findAll()
+                .stream()
+                .map(this::toResponse)
+                .toList();
     }
 
-    public Category create(UUID userId, String name, CategoryType type) {
+    public CategoryResponse create(UUID userId, String name, CategoryType type) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
@@ -39,6 +43,19 @@ public class CategoryService {
                 .user(user)
                 .build();
 
-        return categoryRepository.save(category);
+        Category savedCategory = categoryRepository.save(category);
+
+        return toResponse(savedCategory);
+    }
+
+    private CategoryResponse toResponse(Category category) {
+        return new CategoryResponse(
+                category.getId(),
+                category.getName(),
+                category.getType(),
+                category.getCreatedAt(),
+                category.getUser().getId(),
+                category.getUser().getName()
+        );
     }
 }

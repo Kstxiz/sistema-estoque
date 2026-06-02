@@ -1,5 +1,6 @@
 package br.fatec.finance.controller;
 
+import br.fatec.finance.dto.UserResponse;
 import br.fatec.finance.entity.User;
 import br.fatec.finance.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +16,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
-    public List<User> findAll() {
+    public List<UserResponse> findAll() {
         return userService.findAll();
     }
 
